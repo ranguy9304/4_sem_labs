@@ -1,11 +1,11 @@
 ## CSE Sem 4 Labs
 
-This repository contains code and resources for the labs in the 4th semester of the Computer Science and Engineering program at XYZ University.
+This repository contains code and resources for the labs in the 4th semester of the Computer Science and Engineering program at MIT
 
 The labs are organized into three main folders:
 
   -  DAA (Design and Analysis of Algorithms)
-  -  BDSM (Database Management System)
+  -  BDSM (Business Database System Management )
   -  EMBEDDED_SYSTEMS
 
 Each of these folders contains several subfolders for the individual labs, named as lab1, lab2, and so on.
