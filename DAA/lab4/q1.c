@@ -1,59 +1,84 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<limits.h>
 
-#define MAX_N 10
+int min[1000], min_value = INT_MAX;
 
-int n;
-int cost_matrix[MAX_N][MAX_N];
-
-void generate_cost_matrix() {
-    int i, j;
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            cost_matrix[i][j] = rand() % 10 + 1; // generate a random cost between 1 and 10
-        }
-    }
+void printCombinations(int size, int arr[size][size], int buf[size], int buf_1[size], int ix)
+{
+	int i, j;
+	
+	if(ix == size)
+	{
+		int sum = 0, flag = 1;
+		
+		for(i = 0; i < size; i++)
+		{
+			sum += buf[i];
+		}
+		
+		for(i = 0; i < size - 1; i++)
+		{
+			for(j = i + 1; j < size; j++)
+			{
+				if(buf_1[i] == buf_1[j])
+				{
+					flag = 0;
+					break;
+				}
+			}
+		}
+		
+		if(sum < min_value && flag)
+		{
+			for(i = 0; i < size; i++)
+			{
+				min[i] = buf[i];
+			}
+	
+			min_value = sum;
+		}
+	}
+	
+	else
+	{
+		for(i = 0; i < size; i++)
+		{
+			buf[ix] = arr[i][ix];
+			buf_1[ix] = i;
+		
+			printCombinations(size, arr, buf, buf_1, ix + 1);
+		}
+	}
 }
 
-void print_cost_matrix() {
-    int i, j;
-    printf("Cost matrix:\n");
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            printf("%d ", cost_matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
+int main()
+{
+	int i, j, size;
+	
+	printf("Enter the Size of the Square Matrix:\n");
+	scanf("%d", &size);
+	
+	int arr[size][size];
+	
+	printf("Enter Person vs Job Cost Matrix :\n");
+	
+	for(i = 0; i < size; i++)
+	{
+		for(j = 0; j < size; j++)
+			scanf("%d", &arr[i][j]);
+	}
 
-int assign_brute_force(int perm[]) {
-    int i, j;
-    int min_cost = 1000000; // initialize the minimum cost to a large number
-    int cost;
-    do {
-        cost = 0;
-        for (i = 0; i < n; i++) {
-            cost += cost_matrix[i][perm[i]];
-        }
-        if (cost < min_cost) {
-            min_cost = cost;
-        }
-    } while (next_permutation(perm, perm + n));
-    return min_cost;
-}
+	int buff[size];
+	int buff_1[size];
+	printCombinations(size, arr, buff, buff_1, 0);
 
-int main() {
-    srand(time(NULL)); // seed the random number generator
-    printf("Enter the number of workers/tasks (max %d): ", MAX_N);
-    scanf("%d", &n);
-    generate_cost_matrix();
-    print_cost_matrix();
-    int perm[MAX_N];
-    for (int i = 0; i < n; i++) {
-        perm[i] = i;
-    }
-    int min_cost = assign_brute_force(perm);
-    printf("Minimum cost: %d\n", min_cost);
-    return 0;
+	printf("The Minimum Cost Combination is : ");
+
+	for(j = 0; j < size; j++)
+    	printf("%d ", min[j]);
+
+	printf("\nThe Minimum Cost is : %d\n", min_value);
+
+	return 0;
 }
